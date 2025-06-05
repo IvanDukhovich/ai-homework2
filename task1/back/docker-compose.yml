@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: back-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=back
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - JWT_SECRET=bDKd5L4tSp8BHGwRnAF1mY7qJfX9cV6Z2PxE3WjUuT0QiOhKlIzN
+    restart: on-failure
+    networks:
+      - back-network
+
+  db:
+    image: postgres:14-alpine
+    container_name: back-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=back
+    volumes:
+      - ./src/main/resources/db/migration:/docker-entrypoint-initdb.d
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - back-network
+
+volumes:
+  postgres_data:
+
+networks:
+  back-network:
+    driver: bridge 
