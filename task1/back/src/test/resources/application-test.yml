@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL
+    username: sa
+    password: 123
+    driver-class-name: org.h2.Driver
+  sql:
+    init:
+      mode: always
+      platform: h2
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
+  h2:
+    console:
+      enabled: true
+  test:
+    database:
+      replace: none
+
+# JWT Configuration
+jwt:
+  secret: bDKd5L4tSp8BHGwRnAF1mY7qJfX9cV6Z2PxE3WjUuT0QiOhKlIzN
+  expiration-ms: 86400000  # 24 hours
+
+# Application JWT Configuration (needed by JwtUtils class)
+app:
+  jwt:
+    secret: bDKd5L4tSp8BHGwRnAF1mY7qJfX9cV6Z2PxE3WjUuT0QiOhKlIzN
+    expirationMs: 86400000  # 24 hours
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true 
