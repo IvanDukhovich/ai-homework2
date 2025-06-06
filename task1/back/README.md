@@ -90,16 +90,243 @@ docker-compose up -d db
 
 ### Authentication
 
-- `POST /api/auth/signup` - Register a new user
-- `POST /api/auth/signin` - Login and get JWT token
+#### Register a new user
+- **URL**: `POST /api/auth/signup`
+- **Auth**: None
+- **Request Body**:
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "password123"
+}
+```
+- **Success Response (200 OK)**:
+```json
+{
+  "message": "User registered successfully!"
+}
+```
+- **Error Response (400 Bad Request)**:
+```json
+{
+  "message": "Error: Email is already taken!"
+}
+```
+
+#### Login and get JWT token
+- **URL**: `POST /api/auth/signin`
+- **Auth**: None
+- **Request Body**:
+```json
+{
+  "email": "john@example.com",
+  "password": "password123"
+}
+```
+- **Success Response (200 OK)**:
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "type": "Bearer",
+  "id": 1,
+  "name": "John Doe",
+  "email": "john@example.com"
+}
+```
+- **Error Response (401 Unauthorized)**:
+```json
+{
+  "message": "Invalid credentials"
+}
+```
 
 ### Users
 
-- `GET /api/users` - Get all users
-- `GET /api/users/{id}` - Get user by ID
-- `POST /api/users` - Create a new user
-- `PUT /api/users/{id}` - Update an existing user
-- `DELETE /api/users/{id}` - Delete a user
+#### Get all users
+- **URL**: `GET /api/users`
+- **Auth**: Bearer Token
+- **Success Response (200 OK)**:
+```json
+[
+  {
+    "id": 1,
+    "name": "Leanne Graham",
+    "username": "bret",
+    "email": "leanne@example.com",
+    "address": {
+      "street": "Kulas Light",
+      "suite": "Apt. 556",
+      "city": "Gwenborough",
+      "zipcode": "92998-3874",
+      "geo": {
+        "lat": "-37.3159",
+        "lng": "81.1496"
+      }
+    },
+    "phone": "1-770-736-8031 x56442",
+    "website": "hildegard.org",
+    "company": {
+      "name": "Romaguera-Crona",
+      "catchPhrase": "Multi-layered client-server neural-net",
+      "bs": "harness real-time e-markets"
+    }
+  }
+]
+```
+
+#### Get user by ID
+- **URL**: `GET /api/users/{id}`
+- **Auth**: Bearer Token
+- **Success Response (200 OK)**:
+```json
+{
+  "id": 1,
+  "name": "Leanne Graham",
+  "username": "bret",
+  "email": "leanne@example.com",
+  "address": {
+    "street": "Kulas Light",
+    "suite": "Apt. 556",
+    "city": "Gwenborough",
+    "zipcode": "92998-3874",
+    "geo": {
+      "lat": "-37.3159",
+      "lng": "81.1496"
+    }
+  },
+  "phone": "1-770-736-8031 x56442",
+  "website": "hildegard.org",
+  "company": {
+    "name": "Romaguera-Crona",
+    "catchPhrase": "Multi-layered client-server neural-net",
+    "bs": "harness real-time e-markets"
+  }
+}
+```
+- **Error Response (404 Not Found)**: Empty response
+
+#### Create a new user
+- **URL**: `POST /api/users`
+- **Auth**: Bearer Token
+- **Request Body**:
+```json
+{
+  "name": "John Doe",
+  "username": "johndoe",
+  "email": "john@example.com",
+  "phone": "123-456-7890",
+  "website": "johndoe.com",
+  "address": {
+    "street": "123 Main St",
+    "suite": "Apt 456",
+    "city": "Anytown",
+    "zipcode": "12345",
+    "geo": {
+      "lat": "40.7128",
+      "lng": "-74.0060"
+    }
+  },
+  "company": {
+    "name": "ABC Corp",
+    "catchPhrase": "Innovation for everyone",
+    "bs": "target end-to-end solutions"
+  }
+}
+```
+- **Success Response (200 OK)**:
+```json
+{
+  "id": 3,
+  "name": "John Doe",
+  "username": "johndoe",
+  "email": "john@example.com",
+  "address": {
+    "street": "123 Main St",
+    "suite": "Apt 456",
+    "city": "Anytown",
+    "zipcode": "12345",
+    "geo": {
+      "lat": "40.7128",
+      "lng": "-74.0060"
+    }
+  },
+  "phone": "123-456-7890",
+  "website": "johndoe.com",
+  "company": {
+    "name": "ABC Corp",
+    "catchPhrase": "Innovation for everyone",
+    "bs": "target end-to-end solutions"
+  }
+}
+```
+
+#### Update an existing user
+- **URL**: `PUT /api/users/{id}`
+- **Auth**: Bearer Token
+- **Request Body**:
+```json
+{
+  "name": "John Doe Updated",
+  "username": "johndoe",
+  "email": "john@example.com",
+  "phone": "123-456-7890",
+  "website": "johndoe-updated.com",
+  "address": {
+    "street": "456 New St",
+    "suite": "Suite 789",
+    "city": "Newtown",
+    "zipcode": "54321",
+    "geo": {
+      "lat": "41.8781",
+      "lng": "-87.6298"
+    }
+  },
+  "company": {
+    "name": "XYZ Corp",
+    "catchPhrase": "New innovation for everyone",
+    "bs": "synergize end-to-end solutions"
+  }
+}
+```
+- **Success Response (200 OK)**:
+```json
+{
+  "id": 3,
+  "name": "John Doe Updated",
+  "username": "johndoe",
+  "email": "john@example.com",
+  "address": {
+    "street": "456 New St",
+    "suite": "Suite 789",
+    "city": "Newtown",
+    "zipcode": "54321",
+    "geo": {
+      "lat": "41.8781",
+      "lng": "-87.6298"
+    }
+  },
+  "phone": "123-456-7890",
+  "website": "johndoe-updated.com",
+  "company": {
+    "name": "XYZ Corp",
+    "catchPhrase": "New innovation for everyone",
+    "bs": "synergize end-to-end solutions"
+  }
+}
+```
+- **Error Response (404 Not Found)**: Empty response
+
+#### Delete a user
+- **URL**: `DELETE /api/users/{id}`
+- **Auth**: Bearer Token
+- **Success Response (200 OK)**:
+```json
+{
+  "message": "User deleted successfully"
+}
+```
+- **Error Response (404 Not Found)**: Empty response
 
 ## Testing
 
